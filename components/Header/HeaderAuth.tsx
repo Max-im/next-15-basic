@@ -5,8 +5,7 @@ import {  NavbarItem } from '@heroui/navbar';
 import { Popover, PopoverContent, PopoverTrigger } from '@heroui/popover';
 import { Button } from '@heroui/button';
 import { Avatar } from '@heroui/avatar';
-import * as actions from '@/app/actions';
-
+import * as actions from '@/actions';
 
 export default function HeaderAuth() {
     const { data: session, status } = useSession();
