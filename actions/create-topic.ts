@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createTopicSchema } from "@/schema/create-topic.schema";
-import { auth } from '@/app/auth';
+import { auth } from '@/auth';
 import { Topic } from "@prisma/client";
 import { db } from "@/db";
 import url from '@/url';
@@ -29,7 +29,7 @@ export async function createTopic(formState: CreateTopicState, formData: FormDat
     }
 
     const session = await auth();
-    if (!session || !session.user) {
+    if (!session || !session.user || !session.user.id) {
         return {
             errors: {
                 _form: ['Please login to proceed']
@@ -65,5 +65,4 @@ export async function createTopic(formState: CreateTopicState, formData: FormDat
 
     revalidatePath(url.homeUrl())
     redirect(url.topicShowUrl(topic.slug));
-
 }

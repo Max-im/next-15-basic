@@ -8,8 +8,12 @@ import { Form } from '@heroui/form';
 import * as actions from '@/actions';
 import FormButton from "../FormButton";
 
-export default function TopicCreateForm() {
-    const [formState, action, isPending] = useActionState(actions.createTopic, { errors: {} });
+interface PostCreateFormProps {
+    slug: string;
+}
+
+export default function PostCreateForm({ slug }: PostCreateFormProps) {
+    const [formState, action, isPending] = useActionState(actions.createPost.bind(null, slug), { errors: {} });
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -20,35 +24,35 @@ export default function TopicCreateForm() {
     }
 
     return (
-        <Popover placement='left-start'>
+        <Popover placement="left-start">
             <PopoverTrigger>
-                <Button color='primary' variant='bordered'>Create Topic</Button>
+                <Button color='primary' variant='bordered'>Create Post</Button>
             </PopoverTrigger>
             <PopoverContent>
                 <Form action={action} onSubmit={handleSubmit}>
                     <div className='flex flex-col gap-4 w-80 p-4'>
-                        <h3 className='text-lg'>Create a Topic</h3>
-                        <Input 
-                            label="Name"
+                        <h3 className='text-lg'>Create a Post</h3>
+                        <Input
+                            label="Title"
+                            name='title'
+                            placeholder='Title'
                             labelPlacement='outside'
-                            name='name'
-                            placeholder='Name'
-                            isInvalid={!!formState.errors.name}
-                            errorMessage={formState.errors.name?.join(', ')}
+                            isInvalid={!!formState.errors.title}
+                            errorMessage={formState.errors.title?.join(', ')}
                         />
                         <Textarea
-                            label="Description"
+                            label="Content"
+                            name='content'
+                            placeholder='Content'
                             labelPlacement='outside'
-                            name='description'
-                            placeholder='Description'
-                            isInvalid={!!formState.errors.description}
-                            errorMessage={formState.errors.description?.join(', ')}
+                            isInvalid={!!formState.errors.content}
+                            errorMessage={formState.errors.content?.join(', ')}
                         />
 
                         {formState.errors._form && (
                             <div className='p-2 bg-red-200 border border-red-400 rounded'>{formState.errors._form.join(', ')}</div>
                         )}
-                        <FormButton isLoading={isPending}>Save</FormButton>
+                        <FormButton isLoading={isPending}>Create Post</FormButton>
                     </div>
                 </Form>
             </PopoverContent>
