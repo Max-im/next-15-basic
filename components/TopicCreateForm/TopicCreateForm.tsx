@@ -6,9 +6,10 @@ import { Input, Textarea } from '@heroui/input';
 import { Button } from '@heroui/button';
 import { Form } from '@heroui/form';
 import * as actions from '@/actions';
+import FormButton from "../FormButton";
 
 export default function TopicCreateForm() {
-    const [formState, action] = useActionState(actions.createTopic, { errors: {} });
+    const [formState, action, isPending] = useActionState(actions.createTopic, { errors: {} });
 
     console.log(formState);
 
@@ -49,7 +50,7 @@ export default function TopicCreateForm() {
                         {formState.errors._form && (
                             <div className='p-2 bg-red-200 border border-red-400 rounded'>{formState.errors._form.join(', ')}</div>
                         )}
-                        <Button color="primary" type='submit'>Create</Button>
+                        <FormButton isLoading={isPending}>Save</FormButton>
                     </div>
                 </Form>
             </PopoverContent>

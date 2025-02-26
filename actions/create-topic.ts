@@ -65,4 +65,5 @@ export async function createTopic(formState: CreateTopicState, formData: FormDat
 
     revalidatePath(url.homeUrl())
     redirect(url.topicShowUrl(topic.slug));
+
 }
