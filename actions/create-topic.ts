@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createTopicSchema } from "@/schema/create-topic.schema";
 import { auth } from '@/app/auth';
 import { Topic } from "@prisma/client";
-import { db } from "@/app/db";
+import { db } from "@/db";
 import url from '@/url';
 
 export interface CreateTopicState {
