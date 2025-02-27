@@ -1,7 +1,8 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { Navbar, NavbarBrand, NavbarItem, NavbarContent } from '@heroui/navbar';
-import { Input } from '@heroui/input';
 import HeaderAuth from './HeaderAuth';
+import SearchInput from '../SearchInput';
 
 export default function Header() {
     return (
@@ -13,7 +14,9 @@ export default function Header() {
 
                 <NavbarContent justify='center'>
                     <NavbarItem>
-                        <Input placeholder='Search' />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <SearchInput />
+                        </Suspense>
                     </NavbarItem>
                 </NavbarContent>
 
