@@ -21,8 +21,10 @@ export function fetchPostsBySlug(slug: string): Promise<PostWithData[]> {
 
 export function fetchTopPosts(): Promise<PostWithData[]> {
     return db.post.findMany({
-        take: 5,
-        orderBy: { createdAt: 'desc' },
+        take: 10,
+        orderBy: { comments: {
+            _count: "desc"
+        }},
         include: {
             topic: { select: { slug: true } },
             user: { select: { name: true } },
