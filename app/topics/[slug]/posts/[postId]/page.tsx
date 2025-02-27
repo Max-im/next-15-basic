@@ -1,9 +1,12 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import url from "@/url";
 import { db } from "@/db";
 import { notFound } from "next/navigation";
 import CommentCreateForm from "@/components/CommentCreateForm";
 import CommentList from "@/components/CommentList";
+import PostInfo from "@/components/PostInfo";
+import PostInfoLoader from "@/components/PostInfoLoader";
 
 interface PostShowPageProps {
   params: Promise<{
@@ -14,9 +17,9 @@ interface PostShowPageProps {
 
 export default async function PostShowPage({ params }: PostShowPageProps) {
   const { slug, postId } = await params;
-  const post = await db.post.findUnique({where: {id: postId}});
+  const post = await db.post.findUnique({ where: { id: postId } });
 
-  if(!post) {
+  if (!post) {
     return notFound()
   }
 
@@ -26,11 +29,9 @@ export default async function PostShowPage({ params }: PostShowPageProps) {
         {"< "}Back to {slug}
       </Link>
 
-      <div className="m-4">
-        <h1 className="text-2xl font-bold my-2">{post.title}</h1>
-        <p className="p-4 border rounded">{post.content}</p>
-      </div>
-
+      <Suspense fallback={<PostInfoLoader />}>
+        <PostInfo postId={postId} />
+      </Suspense>
       <CommentCreateForm slug={slug} postId={postId} startOpen />
       <CommentList slug={slug} postId={postId} />
     </div>
