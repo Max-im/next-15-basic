@@ -1,14 +1,15 @@
 import Image from "next/image";
 import CommentCreateForm from "../CommentCreateForm";
-import type { CommentWithUser } from "@/db/queries/comment";
+import { fetchCommentsByPostId } from "@/db/queries/comment";
 
 interface CommentShowProps {
     commentId: string;
-    comments: CommentWithUser[];
     slug: string;
+    postId: string;
 }
 
-export default function CommentShow({ commentId, comments, slug }: CommentShowProps) {
+export default async function CommentShow({ commentId, slug, postId }: CommentShowProps) {
+    const comments = await fetchCommentsByPostId(postId);
     const comment = comments.find((c) => c.id === commentId);
 
     if (!comment) {
@@ -18,7 +19,12 @@ export default function CommentShow({ commentId, comments, slug }: CommentShowPr
     const children = comments.filter((c) => c.parentId === commentId);
     const renderedChildren = children.map((child) => {
         return (
-            <CommentShow slug={slug} key={child.id} commentId={child.id} comments={comments} />
+            <CommentShow
+                key={child.id}
+                slug={slug}
+                commentId={child.id}
+                postId={postId}
+            />
         );
     });
 
